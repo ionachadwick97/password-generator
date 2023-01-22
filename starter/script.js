@@ -103,6 +103,7 @@ var upperCasedCharacters = [
 ];
 
 var reqPassLength = 10;
+arrayCharReqs = [0, 0, 0, 0];
 var upperCase = "y";
 var lowerCase = "y";
 var specCharacters = "y";
@@ -122,6 +123,7 @@ do{
  upperCase = temp.toLowerCase();
  if(upperCase === "y" || upperCase === "n") { OK = true; }
 } while (OK === false);
+if(upperCase === "y") { arrayCharReqs[0] = 1; }
 
 OK = false;
 do{
@@ -129,6 +131,7 @@ do{
   lowerCase = temp.toLowerCase();
   if(lowerCase === "y" || lowerCase === "n") { OK = true; }
 } while (OK === false);
+if(lowerCase === "y") { arrayCharReqs[1] = 1; }
 
 OK = false;
 do{
@@ -136,6 +139,7 @@ do{
   specCharacters = temp.toLowerCase();
   if(specCharacters === "y" || specCharacters === "n") { OK = true; }
 } while (OK === false);
+if(specCharacters === "y") { arrayCharReqs[2] = 1; }
 
 OK = false;
 do{
@@ -143,6 +147,7 @@ do{
   numbers = temp.toLowerCase();
   if(numbers === "y" || numbers === "n") { OK = true; }
 } while (OK === false);
+if(numbers === "y") { arrayCharReqs[3] = 1; }
 
 }
 
@@ -159,17 +164,22 @@ return arr[Math.floor(Math.random()*arr.length)];
 function generatePassword() {
   var arrays = [upperCasedCharacters, lowerCasedCharacters, specialCharacters, numericCharacters];
   let matched = [0, 0, 0, 0];
+  let charCount = 3;
   if (upperCase === "n") {
     matched[0] = 1;
+    charCount--;
   }
   if (lowerCase === "n") {
     matched[1] = 1;
+    charCount--;
   }
   if (specCharacters === "n") {
     matched[2] = 1;
+    charCount--;
   }
   if (numbers === "n") {
     matched[3] = 1;
+    charCount--;
   }
   let passText = "";
   let validated = false;
@@ -179,10 +189,10 @@ function generatePassword() {
     while(arrayNumber > 3) {
       arrayNumber = Math.floor(Math.random()*arrays.length);
 
-      if(arrayNumber === 0 && upperCase === "n") { arrayNumber = 5;}
-      if(arrayNumber === 1 && lowerCase === "n") { arrayNumber = 5;}
-      if(arrayNumber === 2 && specCharacters === "n") { arrayNumber = 5;}
-      if(arrayNumber === 3 && numbers === "n") { arrayNumber = 5;}
+      if(arrayCharReqs[arrayNumber] === 0) { arrayNumber = 5;}
+      if(i <= charCount && matched[arrayNumber] === 1 && arrayNumber < 4) {
+        arrayNumber = 5;
+      }
     }
     
     matched[arrayNumber] = 1;
