@@ -102,17 +102,48 @@ var upperCasedCharacters = [
   'Z'
 ];
 
-var arrays = [specialCharacters, upperCasedCharacters, lowerCasedCharacters, numericCharacters];
-
 var reqPassLength = 10;
+var upperCase = "y";
+var lowerCase = "y";
+var specCharacters = "y";
+var numbers = "y";
 
 // Function to prompt user for password options
 function getPasswordOptions() {
   var OK = false
 do{
-  reqPassLength = prompt('What length do you require?') 
-  if(reqPass2Length > 9 && reqPassLength < 65) { OK = true; }
+  reqPassLength = prompt('What length do you require? 10-64');
+  if(reqPassLength > 9 && reqPassLength < 65) { OK = true; }
 } while (OK === false);
+
+OK = false;
+do{
+ let temp = prompt('Do you require uppercase letters? Y/N');
+ upperCase = temp.toLowerCase();
+ if(upperCase === "y" || upperCase === "n") { OK = true; }
+} while (OK === false);
+
+OK = false;
+do{
+  let temp = prompt('Do you require lowercase letters? Y/N');
+  lowerCase = temp.toLowerCase();
+  if(lowerCase === "y" || lowerCase === "n") { OK = true; }
+} while (OK === false);
+
+OK = false;
+do{
+  let temp = prompt('Do you require special characters? Y/N');
+  specCharacters = temp.toLowerCase();
+  if(specCharacters === "y" || specCharacters === "n") { OK = true; }
+} while (OK === false);
+
+OK = false;
+do{
+  let temp = prompt('Do you require numbers? Y/N');
+  numbers = temp.toLowerCase();
+  if(numbers === "y" || numbers === "n") { OK = true; }
+} while (OK === false);
+
 }
 
 
@@ -123,16 +154,39 @@ return arr[Math.floor(Math.random()*arr.length)];
 }
 
 
-// Function to generate password with user input
 
+// Function to generate password with user input
 function generatePassword() {
-  let passText = "";
+  var arrays = [upperCasedCharacters, lowerCasedCharacters, specialCharacters, numericCharacters];
   let matched = [0, 0, 0, 0];
+  if (upperCase === "n") {
+    matched[0] = 1;
+  }
+  if (lowerCase === "n") {
+    matched[1] = 1;
+  }
+  if (specCharacters === "n") {
+    matched[2] = 1;
+  }
+  if (numbers === "n") {
+    matched[3] = 1;
+  }
+  let passText = "";
   let validated = false;
   let i = 0;
   while(i < 64) {
-    let arrayNumber = Math.floor(Math.random()*arrays.length);
+    let arrayNumber = 5;
+    while(arrayNumber > 3) {
+      arrayNumber = Math.floor(Math.random()*arrays.length);
+
+      if(arrayNumber === 0 && upperCase === "n") { arrayNumber = 5;}
+      if(arrayNumber === 1 && lowerCase === "n") { arrayNumber = 5;}
+      if(arrayNumber === 2 && specCharacters === "n") { arrayNumber = 5;}
+      if(arrayNumber === 3 && numbers === "n") { arrayNumber = 5;}
+    }
+    
     matched[arrayNumber] = 1;
+
     let temp1 = passText;
     let temp2 = getRandom(arrays[arrayNumber]);
     passText = temp1.concat(temp2);
